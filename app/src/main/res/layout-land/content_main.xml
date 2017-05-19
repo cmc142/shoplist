@@ -5,43 +5,79 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:paddingBottom="64dp"
     android:paddingLeft="64dp"
     android:paddingRight="64dp"
-    android:paddingTop="64dp"
+    android:paddingTop="10dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="org.projects.shoppinglist.MainActivity"
     tools:showIn="@layout/activity_main">
 
     <TextView
+        android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:text="Welcome to my shopping list"/>
+        android:layout_gravity="center"
+        android:text="Welcome to my shopping list" />
 
-    <Button
-        android:id="@+id/addButton"
-        android:text="Add to bag"
-        android:layout_gravity="left"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-
-    <EditText
-        android:id="@+id/editText1"
-        android:layout_width="350dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="-150dp"
-        android:ems="10" >
+        android:orientation="horizontal">
 
-        <requestFocus />
-    </EditText>
+        <Button
+            android:id="@+id/addButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2.36"
+            android:text="Add to bag" />
+
+        <Button
+            android:id="@+id/removedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Removed to bag" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/productname"
+            android:layout_width="169dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="45dp"
+            android:ems="10"
+            android:hint="Name"
+            android:inputType="text">
+
+            <requestFocus />
+        </EditText>
+
+        <EditText
+            android:id="@+id/number"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="45dp"
+            android:ems="10"
+            android:hint="Number"
+            android:inputType="number">
+
+            <requestFocus />
+        </EditText>
+
+    </LinearLayout>
+
 
     <ListView
         android:id="@+id/list"
-        android:layout_marginTop="50dp"
-        android:layout_marginLeft="-650dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></ListView>
+        android:layout_height="298dp"
+        android:layout_weight="1.85"></ListView>
 </LinearLayout>
+

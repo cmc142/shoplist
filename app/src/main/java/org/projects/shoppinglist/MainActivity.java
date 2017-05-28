@@ -105,10 +105,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //if(index != null)
                 //
-                if(android.R.layout.simple_list_item_checked == 0)
+                if(listView != null)
                 {
                     Snackbar snackbar2 = Snackbar
-                            .make(listView, " findes ikke nogen item i listen", Snackbar.LENGTH_LONG);
+                            .make(listView, "ikke valgt noget", Snackbar.LENGTH_LONG);
                     snackbar2.show();
                 }
 

@@ -105,34 +105,18 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //if(index != null)
                 //
-                if(chrisshopinglistapp == null)
+                if(listView.getCheckedItemPosition() == Integer.parseInt(null))
                 {
                     Snackbar snackbar2 = Snackbar
                             .make(listView, " findes ikke nogen item i listen", Snackbar.LENGTH_LONG);
                     snackbar2.show();
-                    return;
                 }
 
+                else{
 
-                    final int index = listView.getCheckedItemPosition();
-                getMyAdapter().getRef(index).setValue(null);
+                    onRemoved();
+                }
 
-
-                //if( getMyAdapter().getRef(index).setValue(null))
-                //bag.remove(name);
-                //getMyAdapter().notifyDataSetChanged();
-                Snackbar snackbar = Snackbar
-                        .make(listView, "Item Deleted", Snackbar.LENGTH_LONG)
-                        .setAction("UNDO", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                getMyAdapter().notifyDataSetChanged();
-                                Snackbar snackbar = Snackbar.make(listView, "Item restored!", Snackbar.LENGTH_SHORT);
-                                snackbar.show();
-                            }
-                        });
-
-                snackbar.show();
             }
 
 
@@ -285,6 +269,27 @@ public class MainActivity extends AppCompatActivity {
         p.setNumber(0);
         Log.d(TAG, "onDestroy" + p);
 
+    }
+
+
+    protected void onRemoved() {
+
+
+        final int index = listView.getCheckedItemPosition();
+        getMyAdapter().getRef(index).setValue(null);
+
+        Snackbar snackbar = Snackbar
+                .make(listView, "Item Deleted", Snackbar.LENGTH_LONG)
+                .setAction("UNDO", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        getMyAdapter().notifyDataSetChanged();
+                        Snackbar snackbar = Snackbar.make(listView, "Item restored!", Snackbar.LENGTH_SHORT);
+                        snackbar.show();
+                    }
+                });
+
+        snackbar.show();
     }
 
     @Override

@@ -258,6 +258,8 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             case R.id.btnSignIn:
+                startActivity(new Intent(this, SignIn.class));
+
                 return true;
 
             //return super.onOptionsItemSelected(item);

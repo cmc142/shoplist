@@ -11,8 +11,8 @@ public class Product {
 
     }
 
-  private String name;
-   private int number;
+    private String name;
+    private int number;
 
 
     public String getName() {
@@ -35,6 +35,8 @@ public class Product {
 
     @Override
     public String toString(){
+
         return name + " " + " " + number;
+
     }
 }

@@ -1,11 +1,9 @@
 package org.projects.shoppinglist;
 
-import android.content.ClipData;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,7 +11,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -21,33 +18,29 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseListAdapter;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.FirebaseApp;
 
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "com.example.StateChange" ;
     private String name;
-    private int Value = 0;
-    private String mMessage;
+    public String username;
     private int q;
     Product p = new Product();
 
-    FirebaseListAdapter<Product> adapter;
+
     ListView listView;
-    ArrayList<String> bag = new ArrayList<String>();
+    FirebaseListAdapter adapter;
+    ArrayList<Product> fortyde = new ArrayList<>();
     DatabaseReference chrisshopinglistapp;
 
 
 
-    public FirebaseListAdapter<Product> getMyAdapter()
+    public FirebaseListAdapter getMyAdapter()
     {
         return adapter;
     }
@@ -57,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main);
 
+        setContentView(R.layout.activity_main);
         final TextView textView = (TextView) findViewById(R.id.name);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -79,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         adapter = new FirebaseListAdapter<Product>(this,Product.class,android.R.layout.simple_list_item_checked, chrisshopinglistapp){
+
+
 
             @Override
             protected void populateView(View view, Product product, int i) {
@@ -105,14 +100,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //if(index != null)
                 //
-                if(listView != null)
+              /*  if(adapter != null)
                 {
                     Snackbar snackbar2 = Snackbar
                             .make(listView, "ikke valgt noget", Snackbar.LENGTH_LONG);
                     snackbar2.show();
-                }
+                }*/
 
-                else{
+                if(adapter != null){
 
                     onRemoved();
                 }
@@ -122,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         });
+
 
 
         final Button addButton = (Button) findViewById(R.id.addButton);
@@ -156,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
                 chrisshopinglistapp.push().setValue(p);
                 getMyAdapter().notifyDataSetChanged();
 
+
                 //}
 
                 //  bag.add(name);
@@ -185,10 +182,20 @@ public class MainActivity extends AppCompatActivity {
         // to show on app startup
 
 
+    }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        if(username != "") {
 
+            TextView t = (TextView)findViewById(R.id.textView4);
+            t.setText(username + "  shopping list");
+        }
+        super.onSaveInstanceState(outState);
+        //  outState.putStringArrayList("saved bag", bag);
 
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -205,19 +212,21 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
 
 
+
+
         switch (item.getItemId()) {
 
 
             case R.id.action_settings:
 
-                if(p.getName() != null) {
+
+                if(adapter != null) {
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
                     alertDialogBuilder.setMessage("Are you sure, You wanted to make decision");
                     alertDialogBuilder.setPositiveButton("yes",
                             new DialogInterface.OnClickListener() {
                                 @Override
-                                public void onClick(DialogInterface arg0, int arg1) {
-                                    onDestroy();
+                                public void onClick(DialogInterface arg0, int arg1) {chrisshopinglistapp.removeValue();
                                 }
                             });
                     alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -249,42 +258,47 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             case R.id.btnSignIn:
-                menu login = new menu();
-
                 return true;
 
             //return super.onOptionsItemSelected(item);
+
+            case R.id.action_settings1:
+
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivityForResult(intent, 1);
+
+
+                username = PreferencesFragment.UName(this);
+
+                return true;
         }
 
+
         return true;
-    }
-
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        //adapter.cleanup();
-        chrisshopinglistapp.removeValue();
-        p.setName(null);
-        p.setNumber(0);
-        Log.d(TAG, "onDestroy" + p);
 
     }
+
 
 
     protected void onRemoved() {
 
 
         final int index = listView.getCheckedItemPosition();
-        getMyAdapter().getRef(index).setValue(null);
-
+        fortyde.add((Product) getMyAdapter().getItem(index));
+        getMyAdapter().getRef(index).removeValue();
         Snackbar snackbar = Snackbar
                 .make(listView, "Item Deleted", Snackbar.LENGTH_LONG)
                 .setAction("UNDO", new View.OnClickListener() {
+
                     @Override
                     public void onClick(View view) {
+                        for(Product product: fortyde)
+                        {
+                            chrisshopinglistapp.push().setValue(product);
+                            fortyde.clear();
+                        }
                         getMyAdapter().notifyDataSetChanged();
-                        Snackbar snackbar = Snackbar.make(listView, "Item restored!", Snackbar.LENGTH_SHORT);
+                        Snackbar snackbar = Snackbar.make(listView ,"Item restored!", Snackbar.LENGTH_SHORT);
                         snackbar.show();
                     }
                 });
@@ -292,46 +306,17 @@ public class MainActivity extends AppCompatActivity {
         snackbar.show();
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        //ALWAYS CALL THE SUPER METHOD - To be nice!
-        super.onSaveInstanceState(outState);
-        Log.d(TAG, "onSaveInstanceState" + p);
-        //  outState.putStringArrayList("saved bag", bag);
 
-    }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        Log.d(TAG, "onStart");
+    protected void onDestroy() {
+        super.onDestroy();
+        //adapter.cleanup();
+        //  chrisshopinglistapp.removeValue();
+        //  p.setName(null);
+        // p.setNumber(0);
+        //   Log.d(TAG, "onDestroy" + chrisshopinglistapp);
+
     }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d(TAG, "onResume");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d(TAG, "onPause");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.d(TAG, "onStop");
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        Log.d(TAG, "onRestart");
-    }
-
-
-
 
 }

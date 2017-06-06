@@ -6,13 +6,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingBottom="64dp"
     android:paddingLeft="64dp"
     android:paddingRight="64dp"
-    android:paddingTop="10dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="org.projects.shoppinglist.MainActivity"
-    tools:showIn="@layout/activity_main">
+    tools:showIn="@layout/activity_main"
+    android:weightSum="1">
 
     <TextView
         android:id="@+id/textView4"
@@ -44,14 +43,13 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="46dp"
         android:orientation="horizontal">
 
         <EditText
             android:id="@+id/productname"
-            android:layout_width="169dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="45dp"
+            android:layout_width="wrap_content"
+            android:layout_height="54dp"
             android:ems="10"
             android:hint="Name"
             android:inputType="text">
@@ -62,8 +60,7 @@
         <EditText
             android:id="@+id/number"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="45dp"
+            android:layout_height="61dp"
             android:ems="10"
             android:hint="Number"
             android:inputType="number">
@@ -73,11 +70,9 @@
 
     </LinearLayout>
 
-
     <ListView
         android:id="@+id/list"
-        android:layout_width="match_parent"
-        android:layout_height="298dp"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1.85"></ListView>
 </LinearLayout>
-
